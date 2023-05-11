@@ -2,14 +2,21 @@ package com.example.datasecurityproject3gr27;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import org.apache.commons.codec.binary.Hex;
 //import org.apache.commons.codec.binary.Hex;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -25,7 +32,7 @@ private String subkeyString;
     private Button goDecryption;
 
     @FXML
-    private TextField plainTextField;
+    private TextArea plainTextField;
     @FXML
     private TextArea cipherTextField;
 
@@ -58,13 +65,17 @@ private String subkeyString;
 
 
         byte[] ciphertext = cipher.doFinal(plainText.getBytes());
-        cipherTextField.setText(ciphertext.toString());
+        cipherTextField.setText(Hex.encodeHexString(ciphertext));
 
     }
 
     @FXML
-    void goDecryptionClick(ActionEvent event) {
-
+    void goDecryptionClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("decrypt.fxml"));
+        Parent root = loader.load();
+        Scene manageScene = new Scene(root);
+        Stage primaryStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        primaryStage.setScene(manageScene);
     }
 
 }
