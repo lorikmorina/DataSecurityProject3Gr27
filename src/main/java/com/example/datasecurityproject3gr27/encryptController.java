@@ -65,6 +65,7 @@ private String subkeyString;
 
 
         byte[] ciphertext = cipher.doFinal(plainText.getBytes());
+        Object Hex;
         cipherTextField.setText(Hex.encodeHexString(ciphertext));
 
     }
