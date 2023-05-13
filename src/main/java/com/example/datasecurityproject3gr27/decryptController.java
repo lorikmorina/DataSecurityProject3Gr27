@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -68,12 +67,6 @@ private String subkeyString;
     }
 
     @FXML
-    void goEncryptionClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("encrypt.fxml"));
-        Parent root = loader.load();
-        Scene manageScene = new Scene(root);
-        Stage primaryStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        primaryStage.setScene(manageScene);
-    }
+
 
 }
