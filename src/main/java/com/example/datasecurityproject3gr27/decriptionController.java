@@ -20,8 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
 
 public class decryptController {
-private String cipherText;
-private String subkeyString;
+    private String cipherText;
+    private String subkeyString;
     @FXML
     private Button decryptBtn;
 
