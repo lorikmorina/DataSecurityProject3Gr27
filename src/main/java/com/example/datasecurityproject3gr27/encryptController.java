@@ -1,12 +1,16 @@
 package com.example.datasecurityproject3gr27;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -17,10 +21,12 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
+import java.util.ResourceBundle;
 
-public class encryptController {
+public class encryptController implements Initializable {
 private String plainText;
 private String subkeyString;
     @FXML
@@ -36,6 +42,8 @@ private String subkeyString;
 
     @FXML
     private TextField subKeyField;
+    @FXML
+    private ComboBox<String> combo;
 
     @FXML
     void encryptBtnClick(ActionEvent event) throws Exception {
@@ -65,6 +73,10 @@ private String subkeyString;
         byte[] ciphertext = cipher.doFinal(plainText.getBytes());
         cipherTextField.setText(Hex.encodeHexString(ciphertext));
 
+            String s = combo.getSelectionModel().getSelectedItem().toString();
+
+
+
     }
 
     @FXML
@@ -76,4 +88,10 @@ private String subkeyString;
         primaryStage.setScene(manageScene);
     }
 
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        ObservableList<String> list = FXCollections.observableArrayList("ECB", "CBC", "PCKS5Padding");
+        combo.setItems(list);
+    }
 }
