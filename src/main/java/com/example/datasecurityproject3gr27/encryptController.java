@@ -20,6 +20,8 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -52,7 +54,7 @@ private String subkeyString;
 
         if (subkeyString.length() < 8) {
             int paddingLength = 8 - subkeyString.length();
-            subkeyString = subkeyString + new String(new char[paddingLength]).replace('\0', (char)paddingLength);
+            subkeyString = subkeyString + new String(new char[paddingLength]).replace('\0', (char) paddingLength);
             // Display the key in binary format to see the number padding
             for (int i = 0; i < subkeyString.length(); i++) {
                 char c = subkeyString.charAt(i);
@@ -60,22 +62,36 @@ private String subkeyString;
                 System.out.print(binary + " ");
             }
         }
+
         byte[] subkey = subkeyString.getBytes(StandardCharsets.UTF_8);
         KeySpec keySpec = new DESKeySpec(subkey);
-        //IvParameterSpec ivSpec = new IvParameterSpec(iv.getBytes(StandardCharsets.UTF_8));
+        byte[] iv = new byte[]{0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
+
+        IvParameterSpec ivSpec = new IvParameterSpec(iv);
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
         SecretKey key = keyFactory.generateSecret(keySpec);
 
-        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
+        SecretKey secretKey = new SecretKeySpec(subkey, "DES");
 
+        String mode = "CBC"; // options: ECB, CBC
+        String padding = "PKCS5Padding"; // options: PKCS5Padding,
 
-        byte[] ciphertext = cipher.doFinal(plainText.getBytes());
-        cipherTextField.setText(Hex.encodeHexString(ciphertext));
+        Cipher cipher1 = Cipher.getInstance("DES/" + mode + "/" + padding);
+        String s = combo.getSelectionModel().getSelectedItem().toString();
+        if (s.equals("CBC")) {
 
-            String s = combo.getSelectionModel().getSelectedItem().toString();
-
-
+            cipher1.init(cipher1.ENCRYPT_MODE, secretKey);
+            byte[] ciphertext = cipher1.doFinal(plainText.getBytes());
+            cipherTextField.setText(Hex.encodeHexString(ciphertext));
+        } else {
+            cipher1.init(cipher1.ENCRYPT_MODE, secretKey, ivSpec);
+            byte[] ciphertext1 = cipher1.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
+            cipherTextField.setText(Hex.encodeHexString(ciphertext1));
+        }
+       // else {
+          //  cipher1.init(cipher1.ENCRYPT_MODE, secretKey);
+            //byte[] ciphertext = cipher1.doFinal(plainText.getBytes());
+            //cipherTextField.setText(Hex.encodeHexString(ciphertext));
 
     }
 
