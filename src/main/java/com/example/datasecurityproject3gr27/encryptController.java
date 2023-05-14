@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.commons.codec.binary.Hex;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -61,7 +63,6 @@ private String subkeyString;
 
 
         byte[] ciphertext = cipher.doFinal(plainText.getBytes());
-        Object Hex;
         cipherTextField.setText(Hex.encodeHexString(ciphertext));
 
     }

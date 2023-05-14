@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -60,7 +61,6 @@ public class decryptController {
         Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
         System.out.println("test");
         cipher.init(Cipher.DECRYPT_MODE, key);
-        Object Hex;
         byte[] decrypted = cipher.doFinal(Hex.decodeHex(cipherText.toCharArray()));
         plainTextField.setText(new String(decrypted));
 
